@@ -1,0 +1,40 @@
+{% extends 'profile/baseProfile.html.twig' %}
+
+{% block title %}{% trans %}user.profile{% endtrans %}{% endblock %}
+
+{% block contentTitle %}
+    <h1>{% trans %}user.profile{% endtrans %}</h1>
+{% endblock %}
+{% block content %}
+    <div class="row g-0">
+        <div class="col-md-3" style="margin-top: 15px">
+            <img style="width: 100%;"
+                 src='https://avatars.dicebear.com/api/avataaars/{{ user.email }}.svg?background=%23e6e6fa&size=40&radius=50'
+                 alt="profile-img">
+        </div>
+        <div class="col-md-9">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item mb-2"><b>{% trans %}name{% endtrans %}</b>: {{ user.name }}</li>
+                    <li class="list-group-item mb-2"><b>{% trans %}email{% endtrans %}</b>: {{ user.email }}</li>
+                    <li class="list-group-item mb-2"><b>{% trans %}phone{% endtrans %}</b>: {{ user.phone }}</li>
+
+                    {% set city = 'city' %}
+                    {% set street = 'street' %}
+                    {% set house = 'house' %}
+
+                    {% for addr in address %}
+                        <li class="list-group-item mb-2"><b>{% trans %}address{% endtrans %} {{ loop.index }}</b>:
+                            {{ city|trans|slice(0, 1)|lower }}. {{ addr.city }},
+                            {{ street|trans|slice(0, 2)|lower }}. {{ addr.street }},
+                            {{ house|trans|slice(0, 1)|lower }}. {{ addr.house }}
+                        </li>
+                    {% endfor %}
+
+                </ul>
+                <a class="btn btn-primary" href="{{ path('_profile_addAddress') }}">Добавить адрес</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

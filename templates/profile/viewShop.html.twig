@@ -1,0 +1,37 @@
+{% extends 'profile/baseProfile.html.twig' %}
+
+{% block title %}{% trans %}shop{% endtrans %}: {{ shop.name }}{% endblock %}
+
+{% block contentTitle %}
+    <h1>{% trans %}shop{% endtrans %}: {{ shop.name }}</h1>
+    <a class="link-secondary" href="{{ path('_profile_addProduct', {shopId: shop.id}) }}" aria-label="Add a new report">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+    </a>
+{% endblock %}
+{% block content %}
+    {% for item in products.result %}
+        <div class="col-md-12">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">{{ item.category.name }}</strong>
+                    <h3 class="mb-0">{{ item.name }}</h3>
+                    <div class="mb-1 text-muted">{{ item.createdAt|date("d.m.Y") }}</div>
+                    <p class="card-text mb-auto">{{ item.description }}</p>
+                    <a href="#" class="stretched-link">{% trans %}product.detail.read{% endtrans %}</a>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    {% set imgToProduct = item.images.first %}
+                    {% if imgToProduct != false %}
+                        <img width="200" src="{{ imgToProduct.img.url }}">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% include 'utils/paginator.html.twig' with { 'p': products } %}
+{% endblock %}
+

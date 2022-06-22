@@ -1,0 +1,72 @@
+{% extends 'profile/baseProfile.html.twig' %}
+
+{% block title %}{{ contentTitle }}{% endblock %}
+
+{% block contentTitle %}
+    <h1>{{ contentTitle }}</h1>
+{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+    {% if form.images is defined %}
+        {{ form_row(form.images) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.category) }}
+        <hr>
+        {{ form_row(form.options, {'label_attr': {'style': 'font-weight: bold'}}) }}
+        <hr>
+        {{ form_row(form.characteristics, {'label_attr': {'style': 'font-weight: bold'}}) }}
+        {% else %}
+        {{ form_widget(form) }}
+    {% endif %}
+    {{ form_end(form) }}
+
+    <style>
+        #add_shop_form > *, #product_form > *, #add_address_form > * {
+            margin-bottom: 8px;
+        }
+
+        form {
+            max-height: 100px;
+        }
+
+        #imgProduct_dropzone, #imgProductOption_dropzone {
+            width: fit-content;
+        }
+
+    </style>
+
+    {# Костылиииии #}
+    <script>
+        let btn = document.querySelector('#add_shop_form_submit');
+
+        if (btn && 'addShop' !== window.location.href.substr(-7, 7))
+            btn.innerText = '{% trans %}shop.edit{% endtrans %}'
+    </script>
+
+    <script>
+        $(function () {
+            $('.characteristic_add').click(function (obj) {
+                let formCharacteristic = $(this).parent().parent().parent().parent().parent();
+                let form = $(this).parent().parent().parent().parent().clone();
+                let count = formCharacteristic.children('fieldset').size();
+
+                form.find('.characteristic_add').remove();
+                formCharacteristic.append('<hr style="background-color: #c09f62; margin: 0.5rem 0;">');
+                formCharacteristic.append('<p style="font-style: italic; margin: 6px;">Характеристика ' + Number(count + 2) + '</p>');
+                formCharacteristic.append(form.html().replaceAll('0', count + 1));
+            });
+            $('.option_add').click(function (obj) {
+                let formOption = $(this).parent().parent().parent().parent().parent();
+                let form = $(this).parent().parent().parent().parent().clone();
+                let count = formOption.children('fieldset').size();
+
+                form.find('.option_add').remove();
+                formOption.append('<hr style="background-color: #a6a6d9; margin: 0.5rem 0;">');
+                formOption.append('<p style="font-style: italic; margin: 6px;">Опция ' + Number(count + 2) + '</p>');
+                formOption.append(form.html().replaceAll('0', count + 1));
+            });
+        });
+    </script>
+{% endblock %}
+
